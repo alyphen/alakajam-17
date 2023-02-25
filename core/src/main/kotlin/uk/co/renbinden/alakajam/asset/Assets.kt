@@ -5,6 +5,8 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.bladecoder.ink.runtime.Story
+import uk.co.renbinden.alakajam.conversation.StoryLoader
 
 class Assets(private val assetManager: AssetManager) {
 
@@ -12,6 +14,7 @@ class Assets(private val assetManager: AssetManager) {
 
     init {
         assetManager.setLoader(TiledMap::class.java, AtlasTmxMapLoader(InternalFileHandleResolver()))
+        assetManager.setLoader(Story::class.java, StoryLoader(InternalFileHandleResolver()))
     }
 
     fun switchAssets(requiredAssets: List<Asset<out Any>>) {

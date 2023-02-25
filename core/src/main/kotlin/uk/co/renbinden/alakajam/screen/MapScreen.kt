@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
 import uk.co.renbinden.alakajam.Alakajam17
 import uk.co.renbinden.alakajam.actors.Block.Companion.createBlock
+import uk.co.renbinden.alakajam.actors.Npc.Companion.createNpc
 import uk.co.renbinden.alakajam.actors.Player
 import uk.co.renbinden.alakajam.actors.Player.Companion.createPlayer
 import uk.co.renbinden.alakajam.actors.Water.Companion.createWater
@@ -17,6 +18,8 @@ import uk.co.renbinden.alakajam.asset.Asset
 import uk.co.renbinden.alakajam.asset.Fonts
 import uk.co.renbinden.alakajam.asset.Textures
 import uk.co.renbinden.alakajam.behaviour.ZYIndexed
+import uk.co.renbinden.alakajam.conversation.ConversationController
+import uk.co.renbinden.alakajam.conversation.ConversationModel
 import uk.co.renbinden.alakajam.input.DelegatingInputProcessor
 import uk.co.renbinden.alakajam.map.InvalidMapException
 import uk.co.renbinden.alakajam.map.WorldMapLayer
@@ -53,6 +56,7 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
                     "player" -> createPlayer(this, stage, mapObject, z, textureAtlas)
                     "water" -> createWater(stage, mapObject, z)
                     "block" -> createBlock(stage, mapObject, z)
+                    "npc" -> createNpc(game, this, stage, mapObject, z, textureAtlas)
                     else -> throw InvalidMapException("Map object $id has invalid type $type")
                 }
             }
@@ -117,6 +121,12 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
 
     private fun removeInputProcessor() {
         Gdx.input.inputProcessor = null
+    }
+
+    fun showConversation(model: ConversationModel) {
+        player?.canMove = false
+        model.reset()
+        ConversationController(hud, model, player).progress()
     }
 
 }
