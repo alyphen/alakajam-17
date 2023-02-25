@@ -73,22 +73,22 @@ class Player(
             }
             val playerMoveUpAnimation = Animation(
                 0.2f,
-                textureAtlas.findRegions("player/northwalk"),
+                textureAtlas.findRegions("player_northwalk"),
                 Animation.PlayMode.LOOP
             )
             val playerMoveDownAnimation = Animation(
                 0.2f,
-                textureAtlas.findRegions("player/southwalk"),
+                textureAtlas.findRegions("player_southwalk"),
                 Animation.PlayMode.LOOP
             )
             val playerMoveLeftAnimation = Animation(
                 0.2f,
-                textureAtlas.findRegions("player/westwalk"),
+                textureAtlas.findRegions("player_westwalk"),
                 Animation.PlayMode.LOOP
             )
             val playerMoveRightAnimation = Animation(
                 0.2f,
-                textureAtlas.findRegions("player/eastwalk"),
+                textureAtlas.findRegions("player_eastwalk"),
                 Animation.PlayMode.LOOP
             )
             val player = Player(

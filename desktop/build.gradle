@@ -56,15 +56,11 @@ tasks.register("splitTiles") {
                 return name.endsWith(".png")
             }
         })) {
-            // delete old tiles
-            for (final def oldTileFile in texturesFolder.listFiles(new FilenameFilter() {
-                @Override
-                boolean accept(File dir, String name) {
-                    return name.replaceFirst("_\\d+\\.png", "").equals(tileSetFile.name.replace(".png", ""))
-                }
-            })) {
-                oldTileFile.delete()
+            def tilesFolder = new File(texturesFolder, tileSetFile.getName().replace(".png", ""))
+            if (tilesFolder.exists()) {
+                tilesFolder.deleteDir()
             }
+            tilesFolder.mkdirs()
             // split image into tiles
             def tileSetImage = ImageIO.read(tileSetFile)
             def i = 0
@@ -72,7 +68,7 @@ tasks.register("splitTiles") {
                 for (def x = 0; x < tileSetImage.width; x += tileWidth) {
                     ImageIO.write(
                             tileSetImage.getSubimage(x, y, tileWidth, tileHeight), "png",
-                            new File(texturesFolder, tileSetFile.getName().replace(".png", "_" + i + ".png"))
+                            new File(tilesFolder, tileSetFile.getName().replace(".png", "_" + i + ".png"))
                     )
                     i++
                 }
@@ -88,6 +84,8 @@ tasks.register("packTextures") {
         def settings = new TexturePacker.Settings()
         settings.paddingX = 0
         settings.paddingY = 0
+        settings.combineSubdirectories = true
+        settings.flattenPaths = true
         TexturePacker.process(
                 settings,
                 project.file("../textures").path,
