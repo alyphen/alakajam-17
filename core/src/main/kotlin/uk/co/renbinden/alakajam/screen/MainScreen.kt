@@ -5,34 +5,54 @@ import com.badlogic.gdx.Gdx.gl
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
-import uk.co.renbinden.alakajam.actors.Sprite2D
-import uk.co.renbinden.alakajam.actors.TextureFile
+import uk.co.renbinden.alakajam.Alakajam17
+import uk.co.renbinden.alakajam.actors.SpinningSquare
+import uk.co.renbinden.alakajam.actors.Text
+import uk.co.renbinden.alakajam.asset.Fonts
+import uk.co.renbinden.alakajam.asset.Textures
 import uk.co.renbinden.alakajam.input.DelegatingInputProcessor
 
-class MainScreen : ScreenAdapter() {
+class MainScreen(private val game: Alakajam17) : ScreenAdapter() {
+
+    companion object {
+        val assets = listOf(
+            Textures.textureAtlas,
+            Fonts.lora32
+        )
+    }
 
     private val stage = Stage(FitViewport(640f, 360f))
     private val hud = Stage(FitViewport(1280f, 720f))
     private val inputProcessor = DelegatingInputProcessor(hud, stage)
 
     init {
-        val sprite = Sprite(TextureFile.WHITE)
+        val textureAtlas = game.assets[Textures.textureAtlas]
+        val sprite = Sprite(textureAtlas.findRegion("white"))
+        val font = game.assets[Fonts.lora32]
         stage.addActor(
-            Sprite2D(
-                sprite,
-                Vector2(320f, 180f),
-                Vector2(10f, 10f)
-            )
+            SpinningSquare(
+                sprite
+            ).apply {
+                setPosition(320f, 180f)
+                setScale(0.2f, 0.2f)
+            }
+        )
+        hud.addActor(
+            Text(
+                font,
+                "Hello, world!"
+            ).apply {
+                setPosition(32f, 64f)
+            }
         )
     }
 
     override fun render(delta: Float) {
         act(delta)
         clear()
-        draw(delta)
+        draw()
     }
 
     private fun act(delta: Float) {
@@ -41,7 +61,7 @@ class MainScreen : ScreenAdapter() {
         // any camera movement should happen here - stage.camera.position.set etc
     }
 
-    private fun draw(delta: Float) {
+    private fun draw() {
         drawStage()
         drawHud()
     }
@@ -60,6 +80,11 @@ class MainScreen : ScreenAdapter() {
 
     override fun hide() {
         removeInputProcessor()
+    }
+
+    override fun resize(width: Int, height: Int) {
+        stage.viewport.update(width, height, true)
+        hud.viewport.update(width, height, true)
     }
 
     override fun dispose() {
