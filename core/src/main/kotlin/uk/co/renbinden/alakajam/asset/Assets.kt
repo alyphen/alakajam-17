@@ -5,7 +5,6 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader
 import com.badlogic.gdx.maps.tiled.TiledMap
-import uk.co.renbinden.alakajam.Alakajam17
 
 class Assets(private val assetManager: AssetManager) {
 

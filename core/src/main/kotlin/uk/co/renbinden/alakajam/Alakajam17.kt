@@ -5,7 +5,8 @@ import com.badlogic.gdx.assets.AssetManager
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.VisUI.SkinScale
 import uk.co.renbinden.alakajam.asset.Assets
-import uk.co.renbinden.alakajam.screen.MainScreen
+import uk.co.renbinden.alakajam.asset.Maps
+import uk.co.renbinden.alakajam.screen.MapScreen
 import uk.co.renbinden.alakajam.screen.container.ScreenContainer
 
 class Alakajam17 : Game() {
@@ -19,8 +20,9 @@ class Alakajam17 : Game() {
         assetManager = AssetManager()
         assets = Assets(assetManager)
         screens = ScreenContainer(this)
-        assets.switchAssets(MainScreen.assets)
-        screens.switchScreen { MainScreen(this) }
+        val mapAsset = Maps.testMap1
+        assets.switchAssets(MapScreen.assets + mapAsset)
+        screens.switchScreen { MapScreen(this, mapAsset) }
     }
 
     override fun dispose() {
