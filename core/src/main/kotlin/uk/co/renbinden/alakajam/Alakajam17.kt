@@ -20,7 +20,7 @@ class Alakajam17 : Game() {
         assetManager = AssetManager()
         assets = Assets(assetManager)
         screens = ScreenContainer(this)
-        val mapAsset = Maps.testMap1
+        val mapAsset = Maps.untitled
         assets.switchAssets(MapScreen.assets + mapAsset)
         screens.switchScreen { MapScreen(this, mapAsset) }
     }

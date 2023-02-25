@@ -9,4 +9,9 @@ object Maps {
         TiledMap::class.java
     )
 
+    val untitled = Asset(
+        "maps/untitled.tmx",
+        TiledMap::class.java
+    )
+
 }

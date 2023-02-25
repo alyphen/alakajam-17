@@ -45,7 +45,8 @@ task dist(type: Jar) {
 }
 
 tasks.register("splitTiles") {
-    inputs.dir(project.file("../tilesheets"))
+    inputs.dir("../tilesheets")
+    outputs.dir("../textures")
     doLast {
         def tileWidth = 16
         def tileHeight = 16
@@ -79,13 +80,15 @@ tasks.register("splitTiles") {
 }
 
 tasks.register("packTextures") {
-    inputs.dir(project.file("../textures"))
+    inputs.dir("../textures")
+    outputs.dir("../assets/textures")
     doLast {
         def settings = new TexturePacker.Settings()
         settings.paddingX = 0
         settings.paddingY = 0
         settings.combineSubdirectories = true
         settings.flattenPaths = true
+        settings.fast = true
         TexturePacker.process(
                 settings,
                 project.file("../textures").path,
