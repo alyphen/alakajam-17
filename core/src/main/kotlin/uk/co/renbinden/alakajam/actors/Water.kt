@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import uk.co.renbinden.alakajam.behaviour.ZYIndexed
 import kotlin.math.roundToInt
 
-class Water(private val z: Int) : Actor(), ZYIndexed {
+class Water(z: Int) : Actor(), ZYIndexed {
 
     companion object {
         fun createWater(

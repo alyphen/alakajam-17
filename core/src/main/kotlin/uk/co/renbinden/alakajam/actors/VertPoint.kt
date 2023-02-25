@@ -8,7 +8,7 @@ import uk.co.renbinden.alakajam.map.InvalidMapException
 import kotlin.math.roundToInt
 
 class VertPoint(
-    private val z: Int,
+    z: Int,
     val targetZ: Int
 ) : Actor(), ZYIndexed {
 

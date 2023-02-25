@@ -1,7 +1,6 @@
 package uk.co.renbinden.alakajam.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Gdx.app
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -10,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
 import uk.co.renbinden.alakajam.Alakajam17
+import uk.co.renbinden.alakajam.actors.Block.Companion.createBlock
 import uk.co.renbinden.alakajam.actors.Player
 import uk.co.renbinden.alakajam.actors.Player.Companion.createPlayer
 import uk.co.renbinden.alakajam.actors.Water.Companion.createWater
@@ -39,7 +39,6 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
         val textureAtlas = game.assets[Textures.textureAtlas]
         val map = game.assets[mapAsset]
         for (layer in map.layers) {
-            app.log(javaClass.simpleName, "Loading map layer ${layer.name}")
             stage.addActor(WorldMapLayer(map, layer, stage.batch, stage.camera as OrthographicCamera))
 
             val z = layer.properties["z", Int::class.java]
@@ -53,6 +52,7 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
                 when (type) {
                     "player" -> createPlayer(this, stage, mapObject, z, textureAtlas)
                     "water" -> createWater(stage, mapObject, z)
+                    "block" -> createBlock(stage, mapObject, z)
                     else -> throw InvalidMapException("Map object $id has invalid type $type")
                 }
             }
