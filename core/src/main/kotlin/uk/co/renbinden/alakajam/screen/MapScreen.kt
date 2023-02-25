@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import uk.co.renbinden.alakajam.Alakajam17
 import uk.co.renbinden.alakajam.actors.Player
 import uk.co.renbinden.alakajam.actors.Player.Companion.createPlayer
+import uk.co.renbinden.alakajam.actors.Water.Companion.createWater
 import uk.co.renbinden.alakajam.asset.Asset
 import uk.co.renbinden.alakajam.asset.Fonts
 import uk.co.renbinden.alakajam.asset.Textures
@@ -51,6 +52,7 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
                     ?: throw InvalidMapException("Map object $id does not have a type")
                 when (type) {
                     "player" -> createPlayer(this, stage, mapObject, z, textureAtlas)
+                    "water" -> createWater(stage, mapObject, z)
                     else -> throw InvalidMapException("Map object $id has invalid type $type")
                 }
             }

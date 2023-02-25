@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import uk.co.renbinden.alakajam.action.moveToRounded
+import uk.co.renbinden.alakajam.actors.Player.PlayerState.BOATING
+import uk.co.renbinden.alakajam.actors.Player.PlayerState.WALKING
 import uk.co.renbinden.alakajam.behaviour.Collidable
 import uk.co.renbinden.alakajam.behaviour.Interactable
 import uk.co.renbinden.alakajam.behaviour.ZYIndexed
@@ -27,6 +29,7 @@ class Player(
     private val walkDownAnimation: Animation<out TextureRegion>,
     private val walkLeftAnimation: Animation<out TextureRegion>,
     private val walkRightAnimation: Animation<out TextureRegion>,
+    private val boatTexture: TextureRegion
 ) : Actor(), ZYIndexed {
 
     companion object {
@@ -91,11 +94,13 @@ class Player(
                 textureAtlas.findRegions("player_eastwalk"),
                 Animation.PlayMode.LOOP
             )
+            val boatTexture = textureAtlas.findRegion("boat")
             val player = Player(
                 playerMoveUpAnimation,
                 playerMoveDownAnimation,
                 playerMoveLeftAnimation,
-                playerMoveRightAnimation
+                playerMoveRightAnimation,
+                boatTexture
             )
             player.x = x
             player.y = y
@@ -117,11 +122,17 @@ class Player(
     override val yi
         get() = y.roundToInt()
 
+    private enum class PlayerState {
+        WALKING,
+        BOATING
+    }
+
     private var stateTime = 0f
     private var hasJustCollided = false
     private var direction = DOWN
     var canMove = true
     private var animationPaused = true
+    private var state: PlayerState = WALKING
 
     init {
         addListener(object : InputListener() {
@@ -180,25 +191,21 @@ class Player(
                     moveIfFree(x, y + 16)
                     direction = UP
                     animation = walkUpAnimation
-                    animationPaused = false
                 }
                 vertical < 0 -> {
                     moveIfFree(x, y - 16)
                     direction = DOWN
                     animation = walkDownAnimation
-                    animationPaused = false
                 }
                 horizontal > 0 -> {
                     moveIfFree(x + 16, y)
                     direction = RIGHT
                     animation = walkRightAnimation
-                    animationPaused = false
                 }
                 horizontal < 0 -> {
                     moveIfFree(x - 16, y)
                     direction = LEFT
                     animation = walkLeftAnimation
-                    animationPaused = false
                 }
                 else -> {
                     animationPaused = true
@@ -212,8 +219,6 @@ class Player(
         val actorsAtPosition = stage.actors
             .filter { actor ->
                 actor != this
-                        && actor is Collidable
-                        && actor.isSolid
                         && x < actor.x + actor.width
                         && x + width > actor.x
                         && y < actor.y + actor.height
@@ -221,7 +226,20 @@ class Player(
                         && actor is ZYIndexed
                         && zi == actor.zi
             }
-        if (actorsAtPosition.isEmpty()) {
+        val collidableActorsAtPosition = actorsAtPosition
+            .filter { actor ->
+                actor is Collidable
+                        && actor.isSolid
+            }
+        if (collidableActorsAtPosition.isEmpty()) {
+            if (actorsAtPosition.any { it is Water }) {
+                state = BOATING
+                animationPaused = true
+                stateTime = 0f
+            } else {
+                state = WALKING
+                animationPaused = false
+            }
             addAction(moveToRounded(x, y, 0.2f))
             val vertPointsAtPosition = stage.actors.filterIsInstance<VertPoint>()
                 .filter { actor ->
@@ -242,7 +260,7 @@ class Player(
             }
         } else {
             if (!hasJustCollided) {
-                actorsAtPosition.forEach { actor -> (actor as Collidable).collide() }
+                collidableActorsAtPosition.forEach { actor -> (actor as Collidable).collide() }
             }
             hasJustCollided = true
         }
@@ -256,6 +274,9 @@ class Player(
 
     override fun draw(batch: Batch, parentAlpha: Float) {
         batch.color = Color(1f, 1f, 1f, parentAlpha)
+        if (state == BOATING) {
+            batch.draw(boatTexture, x - 48, y - 32)
+        }
         batch.draw(animation.getKeyFrame(stateTime), x, y)
     }
 
