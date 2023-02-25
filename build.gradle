@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-
+        classpath group: "com.badlogicgames.gdx", name: "gdx-tools", version: "1.11.0"
     }
 }
 
