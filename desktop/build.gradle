@@ -57,12 +57,14 @@ tasks.register("splitTiles") {
             }
         })) {
             // delete old tiles
-            texturesFolder.listFiles(new FilenameFilter() {
+            for (final def oldTileFile in texturesFolder.listFiles(new FilenameFilter() {
                 @Override
                 boolean accept(File dir, String name) {
                     return name.replaceFirst("_\\d+\\.png", "").equals(tileSetFile.name.replace(".png", ""))
                 }
-            })
+            })) {
+                oldTileFile.delete()
+            }
             // split image into tiles
             def tileSetImage = ImageIO.read(tileSetFile)
             def i = 0
