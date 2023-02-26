@@ -13,8 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import uk.co.renbinden.alakajam.action.moveToRounded
-import uk.co.renbinden.alakajam.actors.Player.PlayerState.BOATING
-import uk.co.renbinden.alakajam.actors.Player.PlayerState.WALKING
+import uk.co.renbinden.alakajam.actors.Player.PlayerState.*
 import uk.co.renbinden.alakajam.behaviour.Collidable
 import uk.co.renbinden.alakajam.behaviour.Interactable
 import uk.co.renbinden.alakajam.behaviour.ZYIndexed
@@ -29,6 +28,10 @@ class Player(
     private val walkDownAnimation: Animation<out TextureRegion>,
     private val walkLeftAnimation: Animation<out TextureRegion>,
     private val walkRightAnimation: Animation<out TextureRegion>,
+    private val swimUpAnimation: Animation<out TextureRegion>,
+    private val swimDownAnimation: Animation<out TextureRegion>,
+    private val swimLeftAnimation: Animation<out TextureRegion>,
+    private val swimRightAnimation: Animation<out TextureRegion>,
     private val boatTexture: TextureRegion
 ) : Actor(), ZYIndexed {
 
@@ -94,12 +97,36 @@ class Player(
                 textureAtlas.findRegions("player_eastwalk"),
                 Animation.PlayMode.LOOP
             )
+            val playerSwimUpAnimation = Animation(
+                0.2f,
+                textureAtlas.findRegions("player_northswim"),
+                Animation.PlayMode.LOOP
+            )
+            val playerSwimDownAnimation = Animation(
+                0.2f,
+                textureAtlas.findRegions("player_southswim"),
+                Animation.PlayMode.LOOP
+            )
+            val playerSwimLeftAnimation = Animation(
+                0.2f,
+                textureAtlas.findRegions("player_westswim"),
+                Animation.PlayMode.LOOP
+            )
+            val playerSwimRightAnimation = Animation(
+                0.2f,
+                textureAtlas.findRegions("player_eastswim"),
+                Animation.PlayMode.LOOP
+            )
             val boatTexture = textureAtlas.findRegion("boat")
             val player = Player(
                 playerMoveUpAnimation,
                 playerMoveDownAnimation,
                 playerMoveLeftAnimation,
                 playerMoveRightAnimation,
+                playerSwimUpAnimation,
+                playerSwimDownAnimation,
+                playerSwimLeftAnimation,
+                playerSwimRightAnimation,
                 boatTexture
             )
             player.x = x
@@ -124,7 +151,8 @@ class Player(
 
     private enum class PlayerState {
         WALKING,
-        BOATING
+        BOATING,
+        SWIMMING,
     }
 
     private var stateTime = 0f
@@ -190,22 +218,34 @@ class Player(
                 vertical > 0 -> {
                     moveIfFree(x, y + 16)
                     direction = UP
-                    animation = walkUpAnimation
+                    animation = when (state) {
+                        WALKING, BOATING -> walkUpAnimation
+                        SWIMMING -> swimUpAnimation
+                    }
                 }
                 vertical < 0 -> {
                     moveIfFree(x, y - 16)
                     direction = DOWN
-                    animation = walkDownAnimation
+                    animation = when (state) {
+                        WALKING, BOATING -> walkDownAnimation
+                        SWIMMING -> swimDownAnimation
+                    }
                 }
                 horizontal > 0 -> {
                     moveIfFree(x + 16, y)
                     direction = RIGHT
-                    animation = walkRightAnimation
+                    animation = when (state) {
+                        WALKING, BOATING -> walkRightAnimation
+                        SWIMMING -> swimRightAnimation
+                    }
                 }
                 horizontal < 0 -> {
                     moveIfFree(x - 16, y)
                     direction = LEFT
-                    animation = walkLeftAnimation
+                    animation = when (state) {
+                        WALKING, BOATING -> walkLeftAnimation
+                        SWIMMING -> swimLeftAnimation
+                    }
                 }
                 else -> {
                     animationPaused = true
@@ -236,6 +276,9 @@ class Player(
                 state = BOATING
                 animationPaused = true
                 stateTime = 0f
+            } else if (actorsAtPosition.any { it is Underwater }) {
+                state = SWIMMING
+                animationPaused = false
             } else {
                 state = WALKING
                 animationPaused = false

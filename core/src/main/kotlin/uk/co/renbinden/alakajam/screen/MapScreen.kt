@@ -15,6 +15,7 @@ import uk.co.renbinden.alakajam.actors.ItemPopup
 import uk.co.renbinden.alakajam.actors.Npc.Companion.createNpc
 import uk.co.renbinden.alakajam.actors.Player
 import uk.co.renbinden.alakajam.actors.Player.Companion.createPlayer
+import uk.co.renbinden.alakajam.actors.Underwater.Companion.createUnderwater
 import uk.co.renbinden.alakajam.actors.Water.Companion.createWater
 import uk.co.renbinden.alakajam.asset.Asset
 import uk.co.renbinden.alakajam.asset.Fonts
@@ -60,6 +61,7 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
                 when (type) {
                     "player" -> createPlayer(this, stage, mapObject, z, textureAtlas)
                     "water" -> createWater(stage, mapObject, z)
+                    "underwater" -> createUnderwater(stage, mapObject, z)
                     "block" -> createBlock(stage, mapObject, z)
                     "npc" -> createNpc(game, this, stage, mapObject, z, textureAtlas)
                     "item" -> createItem(game, this, stage, mapAsset.fileName, mapObject, z, textureAtlas)
