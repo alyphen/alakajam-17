@@ -15,4 +15,14 @@ object Fonts {
         }
     )
 
+    val lora16 = Asset(
+        "fonts/lora16.fnt",
+        BitmapFont::class.java,
+        load = { assetManager ->
+            val fontParameters = BitmapFontLoader.BitmapFontParameter()
+            fontParameters.atlasName = "textures/textures.atlas"
+            assetManager.load("fonts/lora16.fnt", BitmapFont::class.java, fontParameters)
+        }
+    )
+
 }

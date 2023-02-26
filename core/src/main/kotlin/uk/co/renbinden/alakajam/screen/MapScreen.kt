@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
 import uk.co.renbinden.alakajam.Alakajam17
 import uk.co.renbinden.alakajam.actors.Block.Companion.createBlock
+import uk.co.renbinden.alakajam.actors.Item.Companion.createItem
+import uk.co.renbinden.alakajam.actors.ItemPopup
 import uk.co.renbinden.alakajam.actors.Npc.Companion.createNpc
 import uk.co.renbinden.alakajam.actors.Player
 import uk.co.renbinden.alakajam.actors.Player.Companion.createPlayer
@@ -17,10 +19,12 @@ import uk.co.renbinden.alakajam.actors.Water.Companion.createWater
 import uk.co.renbinden.alakajam.asset.Asset
 import uk.co.renbinden.alakajam.asset.Fonts
 import uk.co.renbinden.alakajam.asset.Textures
+import uk.co.renbinden.alakajam.behaviour.Stateful
 import uk.co.renbinden.alakajam.behaviour.ZYIndexed
 import uk.co.renbinden.alakajam.conversation.ConversationController
 import uk.co.renbinden.alakajam.conversation.ConversationModel
 import uk.co.renbinden.alakajam.input.DelegatingInputProcessor
+import uk.co.renbinden.alakajam.inventory.ItemType
 import uk.co.renbinden.alakajam.map.InvalidMapException
 import uk.co.renbinden.alakajam.map.WorldMapLayer
 
@@ -29,11 +33,12 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
     companion object {
         val assets = listOf(
             Textures.textureAtlas,
-            Fonts.lora32
+            Fonts.lora32,
+            Fonts.lora16
         )
     }
 
-    private val stage = Stage(FitViewport(640f, 360f))
+    val stage = Stage(FitViewport(640f, 360f))
     private val hud = Stage(FitViewport(1280f, 720f))
     private val inputProcessor = DelegatingInputProcessor(hud, stage)
     var player: Player? = null
@@ -57,6 +62,7 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
                     "water" -> createWater(stage, mapObject, z)
                     "block" -> createBlock(stage, mapObject, z)
                     "npc" -> createNpc(game, this, stage, mapObject, z, textureAtlas)
+                    "item" -> createItem(game, this, stage, mapAsset.fileName, mapObject, z, textureAtlas)
                     else -> throw InvalidMapException("Map object $id has invalid type $type")
                 }
             }
@@ -102,6 +108,8 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
     }
 
     override fun hide() {
+        updateMapState()
+        game.save.save()
         removeInputProcessor()
     }
 
@@ -126,7 +134,30 @@ class MapScreen(private val game: Alakajam17, private val mapAsset: Asset<TiledM
     fun showConversation(model: ConversationModel) {
         player?.canMove = false
         model.reset()
-        ConversationController(hud, model, player).progress()
+        ConversationController(game, hud, model, player).progress()
+    }
+
+    fun removePlayer() {
+        this.player = null
+        stage.actors.removeAll { it is Player }
+    }
+
+    fun updateMapState() {
+        game.save.mapState[mapAsset.fileName] = stage.actors.filterIsInstance<Stateful>()
+            .associateWith(Stateful::state)
+            .mapKeys { (actor, _) -> actor.id }
+        game.save.playerPosition.map = mapAsset.fileName
+        game.save.playerPosition.x = player?.x
+        game.save.playerPosition.y = player?.y
+    }
+
+    fun showItemPopup(itemType: ItemType, amount: Int) {
+        val font = game.assets[Fonts.lora16]
+        val player = player
+        if (player != null) {
+            val itemPopup = ItemPopup(hud, itemType, amount, font)
+            hud.addActor(itemPopup)
+        }
     }
 
 }

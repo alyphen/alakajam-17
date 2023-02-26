@@ -6,15 +6,16 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.bladecoder.ink.runtime.Story
+import uk.co.renbinden.alakajam.Alakajam17
 import uk.co.renbinden.alakajam.conversation.StoryLoader
 
-class Assets(private val assetManager: AssetManager) {
+class Assets(game: Alakajam17, private val assetManager: AssetManager) {
 
     private val loadedAssets = mutableListOf<Asset<out Any>>()
 
     init {
         assetManager.setLoader(TiledMap::class.java, AtlasTmxMapLoader(InternalFileHandleResolver()))
-        assetManager.setLoader(Story::class.java, StoryLoader(InternalFileHandleResolver()))
+        assetManager.setLoader(Story::class.java, StoryLoader(InternalFileHandleResolver(), game))
     }
 
     fun switchAssets(requiredAssets: List<Asset<out Any>>) {

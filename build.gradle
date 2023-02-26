@@ -62,7 +62,8 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         api "com.kotcrab.vis:vis-ui:1.4.11"
-        implementation 'com.bladecoder.ink:blade-ink:1.1.2'
+        api "com.bladecoder.ink:blade-ink:1.1.2"
+        api "com.google.code.gson:gson:2.10.1"
         api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     }
 }
