@@ -54,7 +54,7 @@ Pirate: Where ye be findin' this one?
 Pirate: These be worth their weight.
 Pirate: Thanks, mate.
 REMOVE_ITEM GEM 1
-SET_FLAG GEM_RETRIEVED_FOR_PIRATE true
+SET_FLAG GEMS_RETRIEVED_FOR_PIRATE true
     -> END
 
 === hand_treasure_chest ===
