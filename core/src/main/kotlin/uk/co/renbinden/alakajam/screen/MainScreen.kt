@@ -5,14 +5,21 @@ import com.badlogic.gdx.Gdx.gl
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.FitViewport
+import com.kotcrab.vis.ui.widget.VisTable
+import com.kotcrab.vis.ui.widget.VisTextButton
 import uk.co.renbinden.alakajam.Alakajam17
+import uk.co.renbinden.alakajam.actors.Player
 import uk.co.renbinden.alakajam.actors.SpinningSquare
 import uk.co.renbinden.alakajam.actors.Text
 import uk.co.renbinden.alakajam.asset.Fonts
+import uk.co.renbinden.alakajam.asset.Maps
 import uk.co.renbinden.alakajam.asset.Textures
 import uk.co.renbinden.alakajam.input.DelegatingInputProcessor
+import uk.co.renbinden.alakajam.map.InvalidMapException
 
 class MainScreen(private val game: Alakajam17) : ScreenAdapter() {
 
@@ -42,11 +49,51 @@ class MainScreen(private val game: Alakajam17) : ScreenAdapter() {
         hud.addActor(
             Text(
                 font,
-                "Hello, world!"
+                "GAME TITLE HERE"
             ).apply {
                 setPosition(32f, 64f)
             }
         )
+        val table = VisTable()
+        table.setFillParent(true)
+        table.add(VisTextButton("Play").apply {
+            addListener(object: ClickListener() {
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    val mapAsset = when (game.save.playerPosition.map) {
+                        "maps/untitled.tmx" -> Maps.untitled
+                        else -> Maps.untitled
+                    }
+                    val playerX = game.save.playerPosition.x
+                    val playerY = game.save.playerPosition.y
+                    val playerZ = game.save.playerPosition.z
+                    game.assets.switchAssets(MapScreen.assets + mapAsset)
+                    game.screens.switchScreen {
+                        val mapScreen = try {
+                            MapScreen(game, mapAsset)
+                        } catch (exception: InvalidMapException) {
+                            Gdx.app.error(javaClass.simpleName, "Failed to load map ${mapAsset.fileName}: ${exception.message}")
+                            throw exception
+                        }
+                        if (playerX != null && playerY != null && playerZ != null) {
+                            if (mapScreen.player != null) {
+                                mapScreen.removePlayer()
+                            }
+                            Player.createPlayer(
+                                mapScreen,
+                                mapScreen.stage,
+                                game.assets[Textures.textureAtlas],
+                                playerX,
+                                playerY,
+                                playerZ
+                            )
+                        }
+                        mapScreen
+                    }
+                }
+            })
+        }).padBottom(32f).row()
+        table.add(VisTextButton("Controls")).padBottom(32f).row()
+        hud.addActor(table)
     }
 
     override fun render(delta: Float) {
