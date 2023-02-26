@@ -4,15 +4,17 @@ EXTERNAL getFlag(flag_name)
 {
     - getFlag("PUZZLE_PIECE_RETRIEVED_FOR_CHILD"):
         -> thanks
-    - getItemCount("JIGSAW_PUZZLE_PIECE") > 0:
+    - getFlag("LEGO_BRICK_RETRIEVED_FOR_CHILD") and getItemCount("JIGSAW_PUZZLE_PIECE") > 0:
         -> puzzle_piece_retrieved
     - getFlag("LEGO_BRICK_RETRIEVED_FOR_CHILD"):
         -> puzzle_piece_request
+    - getFlag("TEDDY_BEAR_RETRIEVED_FOR_CHILD") and getItemCount("BRICK") > 0:
+        -> lego_brick_retrieved
     - getFlag("TEDDY_BEAR_RETRIEVED_FOR_CHILD"):
         -> lego_brick_request
     - getItemCount("HUNGY") > 0:
         -> teddy_bear_retrieved
-    - getItemCount("OTHER_TEDDY_1") > 0 || getItemCount("OTHER_TEDDY_2") > 0 || getItemCount("OTHER_TEDDY_3") > 0:
+    - getItemCount("OTHER_TEDDY_1") > 0 or getItemCount("OTHER_TEDDY_2") > 0 or getItemCount("OTHER_TEDDY_3") > 0:
         -> wrong_teddy_bear_retrieved
     - else:
         -> teddy_bear_request
