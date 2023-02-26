@@ -8,10 +8,12 @@ EXTERNAL getFlag(flag_name)
         -> crown_retrieved
     - getFlag("CHALICE_RETRIEVED_FOR_KING"):
         -> crown_request
-    - getFlag("CANDLE_HOLDER_RETRIEVED_FOR_KING") and getItemCount("CANDLE_STAND") > 0:
-        -> candle_holder_retrieved
+    - getFlag("CANDLE_HOLDER_RETRIEVED_FOR_KING") and getItemCount("CHALICE") > 0:
+        -> chalice_retrieved
     - getFlag("CANDLE_HOLDER_RETRIEVED_FOR_KING"):
         -> chalice_request
+    - getItemCount("CANDLE_STAND") > 0:
+        -> candle_holder_retrieved
     - else:
         -> candle_holder_request
 }
