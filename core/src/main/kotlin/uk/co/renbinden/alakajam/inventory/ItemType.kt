@@ -18,7 +18,7 @@ enum class ItemType(
     BAD_ORB("Orb", "An orb filled with brightly-coloured lightning. What could it mean?"),
     STATIC_ORB("Orb", "An orb filled with static. What could it mean?"),
     GEM("Gem", "A beautiful gem. Might fetch a high price."),
-    TREASURE_CHEST("Treasure chest", "A chest of dubloons, gems, and various other displays of opulence."),
+    TREASURE_CHEST("Treasure chest", "A chest of doubloons, gems, and various other displays of opulence."),
     SMARTPHONE("Smartphone", "This might need to be left in a bag of rice for a while..."),
     CROWN("Crown", "A crown fit for a king.")
 
