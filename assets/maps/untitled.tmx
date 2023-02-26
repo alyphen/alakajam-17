@@ -1720,9 +1720,10 @@
     <property name="type" value="water"/>
    </properties>
   </object>
-  <object id="9" x="749.273" y="464.909" width="16" height="16">
+  <object id="9" x="750.546" y="464.182" width="16" height="16">
    <properties>
     <property name="item_type" value="BRICK"/>
+    <property name="required_flags" value="TEDDY_BEAR_RETRIEVED_FOR_CHILD"/>
     <property name="texture" value="lego_red"/>
     <property name="type" value="item"/>
    </properties>
@@ -1765,6 +1766,7 @@
   <object id="15" x="1055.7" y="481.151" width="16" height="16">
    <properties>
     <property name="item_type" value="JIGSAW_PUZZLE_PIECE"/>
+    <property name="required_flags" value="LEGO_BRICK_RETRIEVED_FOR_CHILD,SMARTPHONE_RETRIEVED_FOR_GIRLFRIEND"/>
     <property name="texture" value="puzzle_c_blue"/>
     <property name="type" value="item"/>
    </properties>
@@ -1779,6 +1781,7 @@
   <object id="17" x="1195.39" y="481.515" width="16" height="16">
    <properties>
     <property name="item_type" value="RING"/>
+    <property name="required_flags" value="PUZZLE_PIECE_RETRIEVED_FOR_GIRLFRIEND"/>
     <property name="texture" value="gold_ring_gem_purple"/>
     <property name="type" value="item"/>
    </properties>
@@ -1828,6 +1831,7 @@
   <object id="24" x="1569.82" y="495.455" width="16" height="16">
    <properties>
     <property name="item_type" value="CROWN"/>
+    <property name="required_flags" value="CHALICE_RETRIEVED_FOR_KING,CHALICE_RETRIEVED_FOR_PIRATE"/>
     <property name="texture" value="crown_gold"/>
     <property name="type" value="item"/>
    </properties>
