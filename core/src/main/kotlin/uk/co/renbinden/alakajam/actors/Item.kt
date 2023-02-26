@@ -14,6 +14,7 @@ import uk.co.renbinden.alakajam.behaviour.Collidable
 import uk.co.renbinden.alakajam.behaviour.Interactable
 import uk.co.renbinden.alakajam.behaviour.Stateful
 import uk.co.renbinden.alakajam.behaviour.ZYIndexed
+import uk.co.renbinden.alakajam.conversation.ConversationFlag
 import uk.co.renbinden.alakajam.conversation.ConversationModel
 import uk.co.renbinden.alakajam.inventory.ItemType
 import uk.co.renbinden.alakajam.map.InvalidMapException
@@ -29,6 +30,7 @@ class Item(
     private val itemType: ItemType,
     private val amount: Int,
     private val animation: Animation<TextureRegion>,
+    private val requiredFlags: List<ConversationFlag>
 ) : Actor(), Collidable, Interactable, Stateful, ZYIndexed {
 
     companion object {
@@ -62,6 +64,17 @@ class Item(
             val textureName = mapObject.properties["texture", String::class.java]
                 ?: throw InvalidMapException("Item $id has no texture attribute set")
 
+            val requiredFlags = mapObject.properties["required_flags", String::class.java]
+                ?.split(",")
+                ?.map { flagName ->
+                    try {
+                        ConversationFlag.valueOf(flagName)
+                    } catch (exception: IllegalArgumentException) {
+                        throw InvalidMapException("Item $id has invalid required flag: $flagName")
+                    }
+                }
+                ?: emptyList()
+
             val item = Item(
                 id,
                 game,
@@ -71,6 +84,7 @@ class Item(
                 itemType,
                 amount,
                 Animation(0.2f, textureAtlas.findRegions(textureName), Animation.PlayMode.LOOP),
+                requiredFlags
             )
             item.extractPosition(mapObject)
             item.loadState(game.save, mapName)
@@ -83,8 +97,14 @@ class Item(
     override val yi
         get() = y.roundToInt()
 
-    var stateTime = 0f
-    override var isSolid = true
+    private var stateTime = 0f
+    private var isClaimed: Boolean = false
+
+    private val isRequirementsMet: Boolean
+        get() = requiredFlags.all { flag -> game.save.conversationFlags[flag] == true }
+
+    override val isSolid
+        get() = !isClaimed && isRequirementsMet
 
     override fun collide() {
 
@@ -92,7 +112,7 @@ class Item(
 
     override fun interact() {
         if (isSolid) {
-            isSolid = false
+            isClaimed = false
             screen.updateMapState()
             game.save.inventory.add(itemType, amount)
             game.save.save()
@@ -116,8 +136,8 @@ class Item(
     }
 
     override var state: Map<String, Any>
-        get() = mapOf("claimed" to !isSolid)
+        get() = mapOf("claimed" to !isClaimed)
         set(value) {
-            isSolid = !(value["claimed"] as? Boolean ?: false)
+            isClaimed = !(value["claimed"] as? Boolean ?: false)
         }
 }
