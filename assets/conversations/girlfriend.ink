@@ -8,7 +8,7 @@ EXTERNAL getFlag(flag_name)
         -> ring_retrieved
     - getFlag("PUZZLE_PIECE_RETRIEVED_FOR_GIRLFRIEND"):
         -> ring_request
-    - getFlag("SMARTPHONE_RETRIEVED_FOR_GIRLFRIEND") and getItemCount("JIGSAW_PIECE") > 0:
+    - getFlag("SMARTPHONE_RETRIEVED_FOR_GIRLFRIEND") and getItemCount("JIGSAW_PUZZLE_PIECE") > 0:
         -> jigsaw_piece_retrieved
     - getFlag("SMARTPHONE_RETRIEVED_FOR_GIRLFRIEND"):
         -> jigsaw_piece_request

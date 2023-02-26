@@ -1836,35 +1836,35 @@
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="25" x="511.849" y="112.667" width="16" height="16">
+  <object id="25" x="512" y="112" width="16" height="16">
    <properties>
     <property name="conversation" value="conversations/child.json"/>
     <property name="texture" value="child_south"/>
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="26" x="782.242" y="110.727" width="16" height="16">
+  <object id="26" x="784" y="112" width="16" height="16">
    <properties>
     <property name="conversation" value="conversations/girlfriend.json"/>
     <property name="texture" value="girlfriend_south"/>
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="27" x="1215.54" y="111.576" width="16" height="16">
+  <object id="27" x="1216" y="112" width="16" height="16">
    <properties>
     <property name="conversation" value="conversations/pirate.json"/>
     <property name="texture" value="pirate_south"/>
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="28" x="1152.58" y="111.909" width="16" height="16">
+  <object id="28" x="1152" y="112" width="16" height="16">
    <properties>
     <property name="conversation" value="conversations/king.json"/>
     <property name="texture" value="roleplayer_south"/>
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="29" x="1664.45" y="111.242" width="16" height="16">
+  <object id="29" x="1664" y="112" width="16" height="16">
    <properties>
     <property name="conversation" value="conversations/wizard.json"/>
     <property name="texture" value="wizard_south"/>
