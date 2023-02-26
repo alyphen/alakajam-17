@@ -101,7 +101,7 @@ class Item(
     private var isClaimed: Boolean = false
 
     private val isRequirementsMet: Boolean
-        get() = requiredFlags.any { flag -> game.save.conversationFlags[flag] == true }
+        get() = requiredFlags.isEmpty() || requiredFlags.any { flag -> game.save.conversationFlags[flag] == true }
 
     override val isSolid
         get() = !isClaimed && isRequirementsMet
@@ -112,7 +112,7 @@ class Item(
 
     override fun interact() {
         if (isSolid) {
-            isClaimed = false
+            isClaimed = true
             screen.updateMapState()
             game.save.inventory.add(itemType, amount)
             game.save.save()
@@ -136,8 +136,8 @@ class Item(
     }
 
     override var state: Map<String, Any>
-        get() = mapOf("claimed" to !isClaimed)
+        get() = mapOf("claimed" to isClaimed)
         set(value) {
-            isClaimed = !(value["claimed"] as? Boolean ?: false)
+            isClaimed = (value["claimed"] as? Boolean ?: false)
         }
 }
