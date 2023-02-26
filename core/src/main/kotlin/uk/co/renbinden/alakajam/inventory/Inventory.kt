@@ -13,6 +13,10 @@ class Inventory {
         setAmount(itemType, getAmount(itemType) + amount)
     }
 
+    fun remove(itemType: ItemType, amount: Int) {
+        setAmount(itemType, getAmount(itemType) - amount)
+    }
+
     fun add(item: Item) = add(item.type, item.amount)
 
 }

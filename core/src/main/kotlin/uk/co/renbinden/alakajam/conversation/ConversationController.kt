@@ -25,7 +25,7 @@ class ConversationController(
             var title = ""
             var text = ""
             when {
-                line.startsWith("ITEM") -> {
+                line.startsWith("ADD_ITEM") -> {
                     val params = line
                         .replace("\n", "")
                         .split(" ")
@@ -33,6 +33,17 @@ class ConversationController(
                     val itemType = ItemType.valueOf(params[0])
                     val amount = params[1].toInt()
                     game.save.inventory.add(itemType, amount)
+                    game.save.save()
+                    isStatement = true
+                }
+                line.startsWith("REMOVE_ITEM") -> {
+                    val params = line
+                        .replace("\n", "")
+                        .split(" ")
+                        .drop(1)
+                    val itemType = ItemType.valueOf(params[0])
+                    val amount = params[1].toInt()
+                    game.save.inventory.remove(itemType, amount)
                     game.save.save()
                     isStatement = true
                 }
