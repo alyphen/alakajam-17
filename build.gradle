@@ -17,7 +17,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '1.0.1'
+    version = '1.0.2-SNAPSHOT'
     ext {
         appName = "Alakajam 17"
         gdxVersion = '1.11.0'
