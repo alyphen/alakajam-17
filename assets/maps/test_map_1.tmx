@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="128" height="128" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="5">
+ <properties>
+  <property name="atlas" value="../textures/textures.atlas"/>
+ </properties>
+ <tileset firstgid="1" source="tiles.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="128" height="128">
+  <properties>
+   <property name="z" type="int" value="0"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztw7ENAAAIA6D6/9P+0FEhIQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABao6qqqqqeDQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8tNNUFAQ==
+  </data>
+ </layer>
+ <objectgroup id="3" name="Object Layer 1">
+  <properties>
+   <property name="z" type="int" value="1"/>
+  </properties>
+  <object id="3" x="592" y="784" width="16" height="16">
+   <properties>
+    <property name="type" value="player"/>
+   </properties>
+  </object>
+  <object id="4" x="-496" y="800" width="2544" height="160">
+   <properties>
+    <property name="type" value="water"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

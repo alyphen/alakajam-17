@@ -1,3 +1,5 @@
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+
 sourceCompatibility = 17
 sourceSets.main.resources.srcDirs = ["../assets"]
 
@@ -5,6 +7,8 @@ project.ext.mainClassName = "uk.co.renbinden.alakajam.DesktopLauncherKt"
 project.ext.assetsDir = new File("../assets")
 
 import org.gradle.internal.os.OperatingSystem
+
+import javax.imageio.ImageIO
 
 task run(dependsOn: classes, type: JavaExec) {
     mainClass = project.mainClassName
@@ -40,7 +44,63 @@ task dist(type: Jar) {
     with jar
 }
 
+tasks.register("splitTiles") {
+    inputs.dir("../tilesheets")
+    outputs.dir("../textures")
+    doLast {
+        def tileWidth = 16
+        def tileHeight = 16
+        def texturesFolder = project.file("../textures")
+        for (final def tileSetFile in project.file("../tilesheets").listFiles(new FilenameFilter() {
+            @Override
+            boolean accept(File dir, String name) {
+                return name.endsWith(".png")
+            }
+        })) {
+            def tilesFolder = new File(texturesFolder, tileSetFile.getName().replace(".png", ""))
+            if (tilesFolder.exists()) {
+                tilesFolder.deleteDir()
+            }
+            tilesFolder.mkdirs()
+            // split image into tiles
+            def tileSetImage = ImageIO.read(tileSetFile)
+            def i = 0
+            for (def y = 0; y < tileSetImage.height; y += tileHeight) {
+                for (def x = 0; x < tileSetImage.width; x += tileWidth) {
+                    ImageIO.write(
+                            tileSetImage.getSubimage(x, y, tileWidth, tileHeight), "png",
+                            new File(tilesFolder, tileSetFile.getName().replace(".png", "_" + i + ".png"))
+                    )
+                    i++
+                }
+            }
+            tileSetImage.flush()
+        }
+    }
+}
+
+tasks.register("packTextures") {
+    inputs.dir("../textures")
+    outputs.dir("../assets/textures")
+    doLast {
+        def settings = new TexturePacker.Settings()
+        settings.paddingX = 0
+        settings.paddingY = 0
+        settings.combineSubdirectories = true
+        settings.flattenPaths = true
+        settings.fast = true
+        TexturePacker.process(
+                settings,
+                project.file("../textures").path,
+                project.file("../assets/textures").path,
+                "textures"
+        )
+    }
+}
+
 
 dist.dependsOn classes
+processResources.dependsOn packTextures
+packTextures.dependsOn splitTiles
 
 eclipse.project.name = appName + "-desktop"
