@@ -51,17 +51,17 @@ King: CHALICE!
 King: I need a chalice, peasant.
 King: Please get me one before the banquet.
 * [Of course, my liege]
-    May light rest upon your shoulders, go forth with honor.
+    King: May light rest upon your shoulders, go forth with honor.
     -> END
 * [Not with that attitude]
-    Please? It won't be the same without one.
+    King: Please? It won't be the same without one.
     -> END
 
 === chalice_retrieved ===
 King: A fine chalice indeed.
 King: Fit for a king, one might say.
 He laughs heartily.
-Now the banquet may begin with a splendourous display of wealth...
+King: Now the banquet may begin with a splendourous display of wealth...
 REMOVE_ITEM CHALICE 1
 SET_FLAG CHALICE_RETRIEVED_FOR_KING true
     -> END
