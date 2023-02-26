@@ -1848,7 +1848,7 @@
   </object>
   <object id="27" x="1215.54" y="111.576" width="16" height="16">
    <properties>
-    <property name="conversation" value="conversations/test.json"/>
+    <property name="conversation" value="conversations/pirate.json"/>
     <property name="texture" value="pirate_south"/>
     <property name="type" value="npc"/>
    </properties>
