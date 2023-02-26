@@ -71,7 +71,7 @@ The wizard knocks on the orb.
 Wizard: I don't think this thing is working properly.
 Wizard: I thank you for going to the effort of fetching it, though.
 REMOVE_ITEM STATIC_ORB 1
-SET_FLAG GOOD_ORB_RETRIEVED_FOR_WIZARD true
+SET_FLAG STATIC_ORB_RETRIEVED_FOR_WIZARD true
     -> END
     
 === orb_request ===
