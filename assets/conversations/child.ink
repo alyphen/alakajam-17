@@ -34,6 +34,7 @@ Child: Hungy!!!
 Child: I thought I'd never see you again.
 The child hugs Hungy very tightly.
 Child: Thank you very much!
+REMOVE_ITEM HUNGY 1
 SET_FLAG TEDDY_BEAR_RETRIEVED_FOR_CHILD true
     -> END
 
@@ -51,6 +52,7 @@ Child: How will I ever finish it now?
 === lego_brick_retrieved ===
 Child: Oh! That's the last piece!
 Child: I thought it was lost for sure, and I'd never be able to finish my house!
+REMOVE_ITEM BRICK 1
 SET_FLAG LEGO_BRICK_RETRIEVED_FOR_CHILD true
     -> END
     
@@ -64,6 +66,7 @@ Child: Can you get it for me?
 === puzzle_piece_retrieved ===
 Child: That's the last piece!
 Child: Thank you so much!
+REMOVE_ITEM JIGSAW_PUZZLE_PIECE 1
 SET_FLAG PUZZLE_PIECE_RETRIEVED_FOR_CHILD true
     -> END
     
