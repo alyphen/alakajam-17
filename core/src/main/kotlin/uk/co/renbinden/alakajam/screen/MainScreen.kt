@@ -92,14 +92,6 @@ class MainScreen(private val game: Alakajam17) : ScreenAdapter() {
                 }
             })
         }).padBottom(32f).row()
-        table.add(VisTextButton("Controls").apply {
-            addListener(object : ClickListener() {
-                override fun clicked(event: InputEvent, x: Float, y: Float) {
-                    game.assets.switchAssets(ControlConfigScreen.assets)
-                    game.screens.switchScreen { ControlConfigScreen(game) }
-                }
-            })
-        }).padBottom(32f).row()
         hud.addActor(table)
     }
 
