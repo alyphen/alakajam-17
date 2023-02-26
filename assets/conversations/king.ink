@@ -94,5 +94,5 @@ King: A crown!
 King: Splendiforous! Maginificent! Sensational!
 King: Thanks to all your help, the faire will be a massive success.
 REMOVE_ITEM CROWN 1
-SET_FLAG CROWN_RETRIEVED_FOR_KING 1
+SET_FLAG CROWN_RETRIEVED_FOR_KING true
     -> END
