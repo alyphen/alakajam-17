@@ -101,7 +101,7 @@ class Item(
     private var isClaimed: Boolean = false
 
     private val isRequirementsMet: Boolean
-        get() = requiredFlags.all { flag -> game.save.conversationFlags[flag] == true }
+        get() = requiredFlags.any { flag -> game.save.conversationFlags[flag] == true }
 
     override val isSolid
         get() = !isClaimed && isRequirementsMet
