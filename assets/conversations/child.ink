@@ -24,7 +24,7 @@ Child: I dropped Hungy in the river...
 Child: I can't sleep without him.
 Child: I've had him since I was thiiis big.
 Child: He's much bigger than me and reaaaaally cuddly.
-Child: Could you get him for me?
+Child: Can you get him for me?
     -> END
     
 === teddy_bear_retrieved ===
@@ -32,7 +32,6 @@ Child: Hungy!!!
 Child: I thought I'd never see you again.
 The child hugs Hungy very tightly.
 Child: Thank you very much!
-REMOVE_ITEM HUNGY 1
 SET_FLAG TEDDY_BEAR_RETRIEVED_FOR_CHILD true
     -> END
 
@@ -50,7 +49,6 @@ Child: How will I ever finish it now?
 === lego_brick_retrieved ===
 Child: Oh! That's the last piece!
 Child: I thought it was lost for sure, and I'd never be able to finish my house!
-REMOVE_ITEM BRICK 1
 SET_FLAG LEGO_BRICK_RETRIEVED_FOR_CHILD true
     -> END
     
@@ -64,7 +62,6 @@ Child: Can you get it for me?
 === puzzle_piece_retrieved ===
 Child: That's the last piece!
 Child: Thank you so much!
-REMOVE_ITEM JIGSAW_PUZZLE_PIECE 1
 SET_FLAG PUZZLE_PIECE_RETRIEVED_FOR_CHILD true
     -> END
     
