@@ -6,7 +6,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import uk.co.renbinden.alakajam.conversation.ConversationFlag
 import uk.co.renbinden.alakajam.inventory.Inventory
-import java.io.File
 
 class Save {
 
@@ -18,7 +17,7 @@ class Save {
 
     companion object {
         const val CURRENT_SAVE_VERSION = 1
-        fun load(file: FileHandle = Gdx.files.absolute(File("./save.json").absolutePath)): Save? {
+        fun load(file: FileHandle = Gdx.files.external(".splashdownsalvagesquad/save.json")): Save? {
             Gdx.app.log(Save::class.java.simpleName, "Loading from ${file.path()}...")
             if (!file.exists()) return null
             val gson = Gson()
@@ -29,7 +28,7 @@ class Save {
         }
     }
 
-    fun save(file: FileHandle = Gdx.files.absolute(File("./save.json").absolutePath)) {
+    fun save(file: FileHandle = Gdx.files.external(".splashdownsalvagesquad/save.json")) {
         Gdx.app.log(javaClass.simpleName, "Saving to ${file.path()}...")
         val gson = GsonBuilder().setPrettyPrinting().create()
         file.writeString(gson.toJson(this), false)
